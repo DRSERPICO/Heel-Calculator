@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Calculadora de Tamanho Ideal do Salto</title>
+  <style>
+    /* Reset e base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #003366; /* azul escuro */
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      color: white;
+    }
+    .container {
+      background: white;
+      border-radius: 15px;
+      max-width: 400px;
+      width: 100%;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      position: relative;
+      color: #003366;
+      text-align: center;
+    }
+    h2 {
+      margin-bottom: 1.5rem;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: #003366;
+      letter-spacing: 1px;
+    }
+    label {
+      display: block;
+      text-align: left;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+      color: #003366;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 2px solid #003366;
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    input[type="number"]:focus {
+      border-color: #ffcc00; /* amarelo */
+      box-shadow: 0 0 8px #ffcc00;
+    }
+    button {
+      background: #003366;
+      color: #ffcc00;
+      border: 2px solid #ffcc00;
+      padding: 0.75rem 0;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    button:hover {
+      background: #ffcc00;
+      color: #003366;
+      border-color: #003366;
+    }
+    #resultado {
+      margin-top: 1.5rem;
+      font-weight: 700;
+      font-size: 1.3rem;
+      min-height: 2rem;
+      color: #ffcc00;
+      text-shadow: 0 0 5px #ffcc00;
+      transition: opacity 0.4s ease;
+    }
+    p {
+      margin-top: 2rem;
+      font-size: 1rem;
+      color: #003366;
+      line-height: 1.4;
+    }
+    p a {
+      color: #003366;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    p a:hover {
+      border-color: #ffcc00;
+    }
+
+    /* Banner centralizado */
+    #banner {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #003366;
+      color: #ffcc00;
+      padding: 1.5rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      max-width: 320px;
+      width: 90%;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      z-index: 10000;
+      display: none;
+    }
+    #banner a {
+      color: #ffcc00;
+      text-decoration: underline;
+      font-weight: 900;
+      margin-left: 0.3rem;
+    }
+    #banner button {
+      margin-top: 1rem;
+      background: #ffcc00;
+      color: #003366;
+      border: none;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #banner button:hover {
+      background: #e6b800;
+    }
+
+    /* Responsividade */
+    @media (max-width: 480px) {
+      .container {
+        padding: 1.5rem 1.5rem;
+      }
+      h2 {
+        font-size: 1.4rem;
+      }
+      button {
+        font-size: 1rem;
+      }
+      #banner {
+        max-width: 90vw;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Calculadora de Tamanho Ideal do Salto</h2>
+    <label for="altura">Altura (cm):</label>
+    <input type="number" id="altura" placeholder="Digite sua altura" min="1" />
+
+    <label for="perna">Comprimento da perna (cm):</label>
+    <input type="number" id="perna" placeholder="Digite o comprimento da perna" min="1" />
+
+    <button onclick="calcularSalto()">Calcular</button>
+
+    <div id="resultado"></div>
+
+    <p>
+      Feel the craftsmanship and Legacy of Portugal!  
+      <a href="https://shoestudio.my.canva.site/footwearagency" target="_blank" rel="noopener noreferrer">
+        Visit us SHOESTUDIO
+      </a> e descubra sua coleção!
+    </p>
+  </div>
+
+  <div id="banner">
+    Siga <a href="https://www.linkedin.com/in/h%C3%A9lder-da-silva-93bb49228/" target="_blank" rel="noopener noreferrer">Hélder da Silva no LinkedIn</a> para mais dicas!
+    <br />
+    <button onclick="fecharBanner()">Continuar</button>
+  </div>
+
+  <script>
+    let resultadoPendente = '';
+    function calcularSalto() {
+      const altura = parseFloat(document.getElementById('altura').value);
+      const perna = parseFloat(document.getElementById('perna').value);
+      const resultadoDiv = document.getElementById('resultado');
+
+      if (!altura || !perna || perna >= altura) {
+        resultadoDiv.style.color = '#cc0000';
+        resultadoDiv.textContent = 'Por favor, insira valores válidos. O comprimento da perna deve ser menor que a altura.';
+        return;
+      }
+
+      const saltoIdeal = ((altura / perna) - 1.61) * 10;
+      resultadoPendente = `Seu tamanho ideal de salto é ${saltoIdeal.toFixed(2)} cm.`;
+      resultadoDiv.textContent = '';
+      document.getElementById('banner').style.display = 'block';
+    }
+
+    function fecharBanner() {
+      document.getElementById('banner').style.display = 'none';
+      const resultadoDiv = document.getElementById('resultado');
+      resultadoDiv.style.color = '#ffcc00';
+      resultadoDiv.textContent = resultadoPendente;
+    }
+  </script>
+</body>
+</html>
